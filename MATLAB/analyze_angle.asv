@@ -1,0 +1,32 @@
+
+
+steering_vec = -30/360*2*pi : 1/360*2*pi : 30/360*2*pi;
+roll_vec = 20 : 1/360*2*pi : 80/360*2*pi;
+
+for ii = 1:size(steering_vec,2)
+    for jj = 1:size(roll_vec,2)
+        Car.steering_angle = steering_vec(ii);
+        Car.roll_angle = roll_vec(jj);
+
+        [beta_F(ii,jj), beta_R(ii,jj)] = calculate_angles(alphaF,alphaR,rho);
+
+    end
+end
+
+res = beta_F
+
+
+figure
+subplot(1,2,1)
+surf(roll_vec',steering_vec',res)
+colorbar
+title('Effective Angle Difference of Rear- and Front Wheel Direction [rad]')
+xlabel('Vehicle Roll Angle [rad]')
+ylabel('Steering Angle [rad]')
+subplot(1,2,2)
+contour(roll_vec',steering_vec',res,30)
+colorbar
+title('Effective Angle Difference of Rear- and Front Wheel Direction [rad]')
+xlabel('Vehicle Roll Angle [rad]')
+ylabel('Steering Angle [rad]')
+break

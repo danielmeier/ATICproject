@@ -1,0 +1,3 @@
+The system of your choice (two-wheel driving) is suitable for the purpose of this class. System equations are not included in the proposal, so it is hard to judge if the complexity of the system is adequate at this stage.
+Focus on obtaining the complete system equations and a linearisation with which you can work, and on obtaining a mathematical description of the uncertainty. Both will be needed for future exercises.
+Keep in mind the time constraints for this project! Experimental validation will most likely not be possible. Focus on two-three sources of uncertainty. Note that external disturbances are not uncertainties in the sense of the robust control terminology.

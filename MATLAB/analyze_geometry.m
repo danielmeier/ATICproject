@@ -21,7 +21,7 @@ wheelStruct = struct(...
 %% Degrees of Freedom
 
 Car.I_x_C = [0.5;0;0];
-Car.roll_angle = 50/360*2*pi;
+Car.roll_angle = 6/360*2*pi;
 Car.yaw_angle = 00/360*2*pi;
 Car.steering_angle = 40/360*2*pi;
 
@@ -67,9 +67,12 @@ downvec = -cross(Car.Wheel(i).dir,Car.Wheel(i).I_rn_W);
 Car.Wheel(i).touchpoint = Car.Wheel(i).I_x_W + downvec*Car.Wheel_radius;
 end
 
-a = Car.Wheel(2).dir;
-b = Car.Wheel(4).dir;
+a = Car.Wheel(2).dir
+b = Car.Wheel(4).dir
 Car.anglediff =  atan2(norm(cross(a,b)),dot(a,b));
+Car.angleFR =  atan2(norm(cross(a,[1 0 0])),dot(a,[1 0 0]))
+Car.angleRR =  atan2(norm(cross([1 0 0],b)),dot([1 0 0],b))
+
 
 
 % res(ii,jj) = Car.anglediff;
@@ -121,10 +124,12 @@ hold on
 for i=1:4
 plotCircle3D(Car.Wheel(i).I_x_W',Car.Wheel(i).I_rn_W',Car.Wheel_radius)
 lenvec = 0.05;
-mArrow3(Car.Wheel(i).I_x_W',Car.Wheel(i).I_x_W'+Car.Wheel(i).I_rn_W'*lenvec,'color','black','stemWidth',0.002); 
+% wheel normal vectors
+%mArrow3(Car.Wheel(i).I_x_W',Car.Wheel(i).I_x_W'+Car.Wheel(i).I_rn_W'*lenvec,'color','black','stemWidth',0.002); 
 mArrow3(Car.Wheel(i).touchpoint'-Car.Wheel(i).dir'*lenvec,Car.Wheel(i).touchpoint'+Car.Wheel(i).dir'*lenvec,'color','black','stemWidth',0.002);
 end
 
+grid on
 
 
 
