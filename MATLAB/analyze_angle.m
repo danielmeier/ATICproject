@@ -34,7 +34,7 @@ ylabel('Steering Angle [rad]')
 %% Analyze operating point
 clear beta_F beta_R alphaF alphaR rho
 
-alphaF = -20/360*2*pi : 1/360*2*pi : 20/360*2*pi;
+alphaF = [-20/360*2*pi : 1/360*2*pi : 20/360*2*pi];
 alphaR = 0;
 rho = [...
     phi_roll_operating-20/360*2*pi,...
@@ -46,13 +46,19 @@ rho = [...
 
 for ii = 1:size(alphaF,2)
     for jj = 1:size(rho,2)
-        [beta_F(ii,jj), beta_R(ii,jj)] = calculate_angles(alphaF_offset+alphaF(ii),alphaR_offset+alphaR,rho(jj));
+        [beta_F(ii,jj), beta_R(ii,jj)] = calculate_angles(alphaF_offset + alphaF(ii),alphaR_offset+alphaR,rho(jj));
     end
+end
+
+% Fit linear model
+p = polyfit(alphaF,beta_F(:,3)',1)
+for ii = 1:size(alphaF,2)
+    linearization(ii) = (alphaF(ii))*p(1) + p(2);
 end
 
 figure
 subplot(1,2,1)
-plot(alphaF',beta_F')
+plot(alphaF',beta_F',alphaF',linearization')
 title('Wheel angle of attack [rad]')
 xlabel('Steering Angle alpha_F [rad]')
 ylabel('Effective angle beta_F [rad]')
@@ -62,6 +68,7 @@ legend([...
     '\rho = \rho_0      ';...
     '\rho = \rho_0 + 10°';...
     '\rho = \rho_0 + 20°';...
+    'Linearization      ';...
     ])
 subplot(1,2,2)
 plot(alphaF',beta_R')

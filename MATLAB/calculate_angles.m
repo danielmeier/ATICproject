@@ -24,7 +24,20 @@ end
 
 a = Car.Wheel(WHEEL_FR).dir;
 b = Car.Wheel(WHEEL_RR).dir;
-beta_F =  atan2(norm(cross(a,[1 0 0])),dot(a,[1 0 0]));
-beta_R =  atan2(norm(cross([1 0 0],b)),dot([1 0 0],b));
+
+sign = -cross(a,[1 0 0])/norm(cross(a,[1 0 0]));
+beta_F =  sign(3)*acos(dot(a/norm(a),[1 0 0]));
+sign = -cross([1 0 0],b)/norm(cross([1 0 0],b));
+beta_R =  sign(3)*acos(dot([1 0 0],b/norm(b)));
+
+if ~isfinite(beta_F)
+    beta_F = 0;
+end
+if ~isfinite(beta_R)
+    beta_R = 0;
+end
+
+%beta_F =  atan2(norm(cross(a,[1 0 0])),dot(a,[1 0 0]));
+%beta_R =  atan2(norm(cross([1 0 0],b)),dot([1 0 0],b));
 
 end
