@@ -21,7 +21,7 @@ wheelStruct = struct(...
 %% Degrees of Freedom
 
 Car.I_x_C = [0.5;0;0];
-Car.roll_angle = 6/360*2*pi;
+Car.roll_angle = 68/360*2*pi;
 Car.yaw_angle = 00/360*2*pi;
 Car.steering_angle = 40/360*2*pi;
 

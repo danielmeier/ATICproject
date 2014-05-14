@@ -4,8 +4,8 @@ m_car = 1.2; % [kg]
 v_R = 1; % [m/s]
 g = 9.81; %[m/s^2]
 l_w = 0.30; % [m]
-w_z = 1.0;
-w_w = 40;
+w_z = 0.5;%1.0;
+w_w = 20;%40;
 %w_z = 1.5;
 %w_w = 250;
 
@@ -26,7 +26,7 @@ phi_roll_operating_degree = phi_roll_operating/2/pi*360;
 
 
 % Determine Angle Mapping
-
+clear alphaF alphaR beta_F beta_R
 alphaF = [-20/360*2*pi : 1/360*2*pi : 20/360*2*pi];
 alphaR = 0;
 rho = phi_roll_operating;

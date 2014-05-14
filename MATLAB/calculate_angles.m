@@ -25,9 +25,9 @@ end
 a = Car.Wheel(WHEEL_FR).dir;
 b = Car.Wheel(WHEEL_RR).dir;
 
-sign = -cross(a,[1 0 0])/norm(cross(a,[1 0 0]));
+sign = cross([1 0 0],a)/norm(cross([1 0 0],a));
 beta_F =  sign(3)*acos(dot(a/norm(a),[1 0 0]));
-sign = -cross([1 0 0],b)/norm(cross([1 0 0],b));
+sign = cross([1 0 0],b)/norm(cross([1 0 0],b));
 beta_R =  sign(3)*acos(dot([1 0 0],b/norm(b)));
 
 if ~isfinite(beta_F)
