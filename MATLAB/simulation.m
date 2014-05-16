@@ -51,7 +51,7 @@ title('Nominal model')
 
 % Output multiplicative perturbation weights
 s = tf('s');
-W_rho = 0.5*s/(1 + 0.25*s);             % height response
+W_rho = 0.5*s/(1 + 0.25*s);
 
 
 %   -------------- performance weights ----------------------
@@ -67,7 +67,7 @@ W_rhod = 2.5/(500*s+1);      % low frequency disturbance
 W_rhoperf = 20/(600*s+1);
 
 %  Actuator penalties
-W_alphaperf = 0.04*(1+40*s)/(1+0.1*s);
+W_alphaperf = 0.04*(1+40*s)/(100+0.1*s);
 
 % Calculate frequency response
 W_rho_f = frd(W_rho,omega);
@@ -127,10 +127,11 @@ P = ss(A_P,B_P,C_P,D_P);
 %    Create indices for each block.
 
 Iz = [1:1]';
-Iv = [1:1]';
 Ie = [2:3]';
+Iy = [4:5]';
+
+Iv = [1:1]';
 Iw = [2:4]';
-Iy = [5:5]';
 Iu = [5:5]';
 
 %    define dimensions for each
@@ -160,9 +161,9 @@ Pnomdesign = minreal(Pnomdesign);   % remove unobservable/uncontrollable
                                     % states.
 				     
 [Knom,Gnom,gamma,info] = hinfsyn(Pnomdesign,nmeas,nctrl,...
-                         'METHOD','ric',...   % Riccati solution
-			 'DISPLAY','on',...   % verbose
-			 'TOLGAM',0.1);       % gamma tolerance
+    'METHOD','ric',...   % Riccati solution
+	'DISPLAY','on',...   % verbose
+	'TOLGAM',0.1);       % gamma tolerance
 			    
 %  Check this design and see if we are happy with this as the best
 %  possible nominal performance.  At this stage we should retune
@@ -178,16 +179,35 @@ else
   fprintf('  (stable)\n\n');
 end
 
-L_s = tf(Knom) * tf(P_car);
-T_s = L_s / (1+L_s);
+% L_s = tf(Knom) * tf(P_car);
+% T_s = L_s / (1+L_s);
+% 
+% figure
+% h = sigmaplot(T_s);
+% grid on
+% % gamma = sqrt(eta)
+% 
+% eta = gamma^2
 
-figure
-h = sigmaplot(T_s);
-grid on
-% gamma = sqrt(eta)
 
-eta = gamma^2
+% Check the singular values of the weighted closed-loop.  This will
+% tell us the frequency ranges where the performance is closest to 
+% the specified limits.
 
+Gnom_f = frd(Gnom,omega);
+svdGnom_f = svd(Gnom_f);
+
+figure(9)
+subplot(1,1,1)
+semilogx(svdGnom_f)
+grid
+xlabel('Frequency [rad/sec]')
+title('Weighted closed-loop singular values')
+
+
+% Find closed loop eigenvalues
+G_cl=lft(Pnomdesign,Knom,nctrl,nmeas);
+eig(G_cl)
 
 
 
