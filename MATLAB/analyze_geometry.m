@@ -3,6 +3,9 @@ clc
 clear all
 close all
 
+%% Add packages to path
+addpath(genpath('packages'))
+
 WHEEL_FL = 1;
 WHEEL_FR = 2;
 WHEEL_RL = 3;

@@ -2,6 +2,9 @@ clc
 clear all
 close all
 
+%% Add packages to path
+addpath(genpath('packages'))
+
 %% Load parameters
 run('parameters')
 
