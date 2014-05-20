@@ -202,7 +202,7 @@ subplot(1,1,1)
 semilogx(svdGnom_f)
 grid
 xlabel('Frequency [rad/sec]')
-title('Weighted closed-loop singular values')
+title('Weighted closed-loop singular values H_i_n_f')
 
 
 % Find closed loop eigenvalues
