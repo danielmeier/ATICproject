@@ -67,7 +67,7 @@ W_rhod = 2.5/(500*s+1);      % low frequency disturbance
 W_rhoperf = 20/(600*s+1);
 
 %  Actuator penalties
-W_alphaperf = 0.04*(1+40*s)/(100+0.1*s);
+W_alphaperf = 0.04*(1+0.4*s)/(100+0.1*s);
 
 % Calculate frequency response
 W_rho_f = frd(W_rho,omega);
@@ -77,7 +77,7 @@ W_rhoperf_f = frd(W_rhoperf,omega);
 W_alphaperf_f = frd(W_alphaperf,omega);
 
 % Plot pertubations
-figure(2)
+figure
 subplot(1,1,1)
 loglog(abs(W_rho_f),'-.',...
     abs(W_rhon_f),'-.',...
@@ -197,7 +197,7 @@ end
 Gnom_f = frd(Gnom,omega);
 svdGnom_f = svd(Gnom_f);
 
-figure(9)
+figure
 subplot(1,1,1)
 semilogx(svdGnom_f)
 grid

@@ -62,7 +62,6 @@ Ak = iN*(Ah-N*Bk*Cy*X-Y*Bu*Ck*M'-Y*A*X)*iM';
 Dk = zeros(length(Iu),length(Iy));
  
 K_2lmi = ss(Ak,Bk,Ck,Dk);
-% Generalized feedback interconnection of two models 
 G_2lmi = lft(P,K_2lmi);
  
 % H2_controller using h2syn()
