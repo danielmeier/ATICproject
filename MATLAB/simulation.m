@@ -23,13 +23,13 @@ run('linearize_pertubated_plant_model_car')
 %% Controller design
 
 run('design_K_nom')
-analyze_controller(P_nom,K_nom,nctrl,nmeas,omega,'Nominal Design')
+analyze_controller(P_nom,K_nom,nctrl,nmeas,omega,'Nominal Design',P,Iw,Ie,Iz,Iv)
 
 run('design_K_LMI')
-analyze_controller(P_h2lmi,K_h2lmi,nctrl,nmeas,omega,'H2 LMI')
+analyze_controller(P_h2lmi,K_h2lmi,nctrl,nmeas,omega,'H2 LMI',P,Iw,Ie,Iz,Iv)
 
 run('design_K_H2Syn')
-analyze_controller(P_h2syn,K_h2syn,nctrl,nmeas,omega,'H2 Syn')
+analyze_controller(P_h2syn,K_h2syn,nctrl,nmeas,omega,'H2 Syn',P,Iw,Ie,Iz,Iv)
 
 
 

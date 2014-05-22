@@ -1,7 +1,7 @@
 %Pnom = P_test
 %K = K_2lmi
 
-function [] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car)
+function [] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv)
 
 % Generalized feedback interconnection of two models 
 Gnom = lft(P,K,nctrl,nmeas);
@@ -26,19 +26,20 @@ svdGnom_f = svd(Gnom_f);
 
 figure
 
-subplot(2,2,1)
+subplot(1,2,1)
 semilogx(svdGnom_f)
 grid on
 xlabel('Frequency [rad/sec]')
 title(['Weighted closed-loop singular values: ', name])
 
-subplot(2,2,2)
+subplot(1,2,2)
 
-Grob    = lft(P_car,K,nctrl,nmeas);
-step(Grob,0.2);
+%step(Gnom,0.2);
+%Grob    = lft(P_car,K,nctrl,nmeas);
 
 
-subplot(2,2,3)
+
+
 RS_blk = [1,1];
 NP_blk = [length(Iw),length(Ie)];
 RP_blk = [RS_blk;NP_blk];
