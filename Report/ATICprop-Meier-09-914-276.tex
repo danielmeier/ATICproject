@@ -248,6 +248,7 @@
 % Pdflatex produces superior hyperref results and is the recommended
 % compiler for such use.
 
+\usepackage{epstopdf}
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -273,7 +274,8 @@ D-MAVT, ETH Zurich}
 \maketitle
 
 \begin{abstract}
-This project aims to use a robust control approach in order to stabilize a radio controlled car on two wheels while still having control over direction and speed of the car. Figure \ref{figure:arab_driving} shows this driving mode on a real car. A car on two wheels is an unstable system comparable to an inverted pendulum and therefore needs to be actively controlled. Due to many sources of uncertainty a robust controller is desirable.
+
+This project presents a robust control approach in order to stabilize a radio controlled car on two wheels. Figure \ref{figure:arab_driving} shows this driving mode with a real car. A car on two wheels is an unstable system comparable to an inverted pendulum and therefore needs to be actively controlled. Due to many sources of uncertainty a robust controller is desirable.
 
 \begin{figure}[h]
 \centering
@@ -284,17 +286,20 @@ This project aims to use a robust control approach in order to stabilize a radio
 
 \end{abstract}
 
+\section{Declaration of originality}
 
-\section{Prior Work}
+Declaration of originality.
 
-Arndt \cite{bib:arndt} presented an approach to control a car on two wheels however not with an optimal controller. Moreover, their car has significantly bigger tires, more inertia and a higher center of gravity which facilitates control. Liu \cite{bib:liu} developed a PID approach to control a car driving on two wheels.
+\section{Introduction}
 
+The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}. Its length is about 430mm with a weight of about 1.2kg. The resulting nonlinear system is unstable. There is one equilibrium point which is dependant on the weight distribution of the car (center of gravity).
 
-
-\section{System}
-
-The R/C car which will be modelled is a HPI Sprint, as depicted in figure \ref{figure:hpi_:sprint}. Its length is about 430mm with a weight of about 1.2kg. The resulting nonlinear system is unstable. There is one equilibrium point which is dependant on the weight distribution of the car (center of gravity). 
-
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=.3\textwidth]{pics/hpisprintgeom.pdf} 
+  \caption{HPI Sprint}  
+  \label{figure:hpi_sprint}
+\end{figure}
 
 The controller has in- \& outputs as depicted in figure \ref{figure:controlinout}. As shown in \cite{bib:arndt}, a similar system can be controlled in a SISO matter. However, since there are cross-couplings, a MIMO approach would promise better performance.
 
@@ -306,9 +311,9 @@ The controller has in- \& outputs as depicted in figure \ref{figure:controlinout
 \hline
 SISO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
 \hline
-MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
-     	& Speed v 		& Acceleration\\
-\hline
+%MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
+%     	& Speed v 		& Acceleration\\
+%\hline
 \end{tabular}
 \caption{In- and outputs of the control systems}  
 \label{figure:controlinout}
@@ -316,16 +321,129 @@ MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
 \end{table}
 
 
+\section{Prior Work}
+
+Arndt \cite{bib:arndt} presented an approach to control a car on two wheels however not with an optimal controller. Moreover, their car has significantly bigger tires, more inertia and a higher center of gravity which facilitates control. Liu \cite{bib:liu} developed a PID approach to control a car driving on two wheels.
+
+\section{Dynamic System Model}
+
+The system model is set up as depicted in Figure \ref{figure:P_car}. It consists of the steering mechanism, the roll angle dependant mapping of the steering angle and the vehicle body dynamics.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/P_car.png} 
+  \caption{Normalized plant}  
+  \label{figure:P_car}
+\end{figure}
+
+As normalization factors, a steering angle $\alpha_{0}=10°$ and a roll angle $\rho_{0}=10°$ is chosen.
+
+
+\subsection{Modelling Assumptions}
+
+\begin{itemize}
+    \item Constant velocity. Dynamics of motor are slower.
+    \item Coriolis force is neglected, since it small for small steering angles.
+    \item Tires have infinite grip and follow exactly the steering direction.
+\end{itemize}
+
+
+\subsection{Steering}
+
+The \textsc{front steering} is modelled as a second order system as described by equation \ref{eq:steering}. $\alpha _{desired}$ is the systems control input, $\omega$ and $\zeta$ are chosen to match the dynamics as realistic as possible.
+
+\begin{equation}
+\frac{{{d^2}}}{{d{t^2}}}\alpha  =  - 2\zeta \omega \dot \alpha  - {\omega ^2}\left( {\alpha  - {\alpha _{desired}}} \right)
+\label{eq:steering}
+\end{equation}
+
+To get the effective steering angle $\beta$, a nonlinear mapping is required. It is depicted by Figure \ref{figure:angle_plot} and implemented in the block \textsc{Angle Mapping}. It can be seen, that steering inputs lead to high effective angles when operating at a high roll angle.
+
+%\begin{figure}[Hhh]
+%\centering
+%  \includegraphics[width=.3\textwidth]{pics/car_roll.eps} 
+%  \caption{Car with a non-zero roll angle. The effective steering angle $\beta$ is different to the steering angle $\alpha$}  
+%  \label{figure:car_roll}
+%\end{figure}
+
+\begin{figure}[Hhh]
+\centering
+  \includegraphics[width=.4\textwidth]{pics/angle_plot.eps} 
+  \caption{Angle mapping: Steering angle $\alpha$ vs. effective steering angle $\beta$}  
+  \label{figure:angle_plot}
+\end{figure}
+
+
+\subsection{Body dynamics}
+
+The vehicle is modelled as depicted in Figure \ref{figure:geometry}. The operating point is chosen as $\dot{\Psi} = \dot{\rho} = \dot{\alpha} = 0$
 
 \begin{figure}[h!]
 \centering
-  \includegraphics[width=.3\textwidth]{pics/hpisprintgeom.pdf} 
+  \includegraphics[width=.47\textwidth]{pics/geometry} 
   \caption{HPI Sprint}  
-  \label{figure:hpi_:sprint}
+  \label{figure:geometry}
 \end{figure}
+
+
+
+
+
+ 
+
+
+
+
+
+
 
  
 \section{Uncertainty Modelling}
+
+
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/model_car.png} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/model_car_unweighted.png} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/weights.eps} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
+\begin{equation}
+{W_{rho}} = 0.05
+\end{equation}
+\begin{equation}
+{W_{rho,noise}} = 0.05
+\end{equation}
+\begin{equation}
+{W_{rho,disturbance}} = \frac{{2.5}}{{5 \cdot s + 1}}
+\end{equation}
+\begin{equation}
+{W_{rho,performace}} = \frac{{10}}{{10 \cdot s + 1}}
+\end{equation}
+\begin{equation}
+{W_{alpha,performance}} = \frac{{0.04 \cdot \left( {1 + 0.4 \cdot s} \right)}}{{100 + 0.1 \cdot s}}
+\end{equation}
+
+
 
 Potential sources for uncertainty comprise:
 
@@ -338,50 +456,7 @@ Potential sources for uncertainty comprise:
 \end{itemize}
 
 
-\section{Working Packages}
-
-In order to complete this project successfully, the following working packages are proposed:
-
-\begin{itemize}
-    \item Literature research
-    \item System modelling
-    \item $H_\infty$ controller design
-    \item $\mu$-test and DK iterations in simulation
-\end{itemize}
-
-As a last step, the controller could be applied to a real RC car in order to verify its performance. The scope of this project however lies in the controller development in the simulation environment. An implementation will comprise many other challenges.
  
- 
-\section{Parameter identification}
-
-\begin{itemize}
-    \item Steering angle: Step from -20 to 20 degrees, measure time and estimate overshoot
-\end{itemize}
- 
- 
-\section{Modelling Assumptions}
-
-\begin{itemize}
-    \item Constant velocity. Dynamics of motor are slower.
-    \item Coriolis force is neglected, since it small for small steering angles.
-    \item Tires have infinite grip and follow exactly the steering direction.
-\end{itemize}
-
- 
-\section{Uncertainties}
-
-\begin{itemize}
-    \item Steering (offset and mapping function)
-    \item Velocity
-\end{itemize}
- 
-\section{Operating Point}
-
-\begin{itemize}
-    \item yawrate = 0
-    \item rollrate = 0
-    \item steeringrate = 0
-\end{itemize}
 
 \section{States}
 
@@ -409,8 +484,6 @@ MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
     \item $\rho$
 \end{itemize}
 
-\section{Inputs}
-$\alpha_{SP}$
 
  
  

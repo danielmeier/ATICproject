@@ -10,6 +10,8 @@ run('parameters')
 omega = logspace(-4,3,250);
 global K_sim;
 
+K_sim = 1
+
 %% Linearize normalized car plant
 
 % Linearize Plant
@@ -41,6 +43,10 @@ run DK_iter
 
 
 [Kmu1,Gmu1,gamma1,info1] = hinfsyn(Pmu1design,nmeas,nctrl);
+
+if isempty(Kmu1),
+  error('hinfsyn failed to run');
+end
 Kmu1 = minreal(Kmu1);
 G_mu1= lft(P_nom,Kmu1);
 norm(G_mu1,Inf)

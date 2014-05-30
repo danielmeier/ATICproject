@@ -37,5 +37,5 @@ grid
 legend('W_{rho}','W_{noise}','W_{disturbances}','W_{rho,perf}','W_{alpha,perf}')
 xlabel('Frequency [rad/sec]')
 ylabel('Magnitude')
-title('Perturbation weights')
+title('Perturbation and perfornace weights')
 grid off

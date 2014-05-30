@@ -141,8 +141,8 @@ sysD0 = zeros(1,1);   %% FIXME generic
 sysD0 = ss(sysD0);
 sysDi0 = zeros(1,1);   %% FIXME generic
 sysDi0 = ss(sysDi0);
-sysD0(1,1) = D0_1d; % choose 3rd order
-sysDi0(1,1) = inv(D0_1d);
+sysD0(1,1) = D0_1c; % choose 3rd order
+sysDi0(1,1) = inv(D0_1c);
 %sysD0(2,2) = D0_2a;
 %sysDi0(2,2) = inv(D0_2a);
 

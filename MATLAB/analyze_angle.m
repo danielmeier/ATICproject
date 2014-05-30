@@ -12,7 +12,7 @@ run('parameters')
 
 alphaF = -20/360*2*pi : 1/360*2*pi : 20/360*2*pi;
 alphaR = 0;
-rho = 0 : 1/360*2*pi : 90/360*2*pi;
+rho = 1/360*2*pi : 1/360*2*pi : 90/360*2*pi;
 
 for ii = 1:size(alphaF,2)
     for jj = 1:size(rho,2)
@@ -21,12 +21,13 @@ for ii = 1:size(alphaF,2)
 end
 
 figure
-subplot(1,2,1)
+%subplot(1,2,1)
 surf(rho',alphaF',beta_F)
-colorbar
-title('Front wheel angle of attack [rad]')
-xlabel('Vehicle Roll Angle [rad]')
-ylabel('Steering Angle [rad]')
+%colorbar
+title('Front wheel angle of attack \beta [rad]')
+xlabel('Vehicle Roll Angle \rho [rad]')
+ylabel('Steering Angle \alpha [rad]')
+figure
 subplot(1,2,2)
 contour(rho',alphaF',beta_F,30)
 colorbar
