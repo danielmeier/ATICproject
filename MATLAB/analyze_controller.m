@@ -1,7 +1,7 @@
 %Pnom = P_test
 %K = K_2lmi
 
-function [closed_loop_2norm,closed_loop_infnorm ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
+function [closed_loop_2norm,closed_loop_infnorm,muinfo0,Grob_f,muRP ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
 
 % Generalized feedback interconnection of two models 
 Gnom = lft(P,K,nctrl,nmeas);

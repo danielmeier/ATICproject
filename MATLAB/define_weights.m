@@ -1,6 +1,6 @@
 % Output multiplicative perturbation weights
 s = tf('s');
-W_rho = ss(0.2);% 0.5*s/(1 + 0.25*s);
+W_rho = ss(0.05);% 0.5*s/(1 + 0.25*s);
 
 
 %   -------------- performance weights ----------------------
