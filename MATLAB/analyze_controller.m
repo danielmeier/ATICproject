@@ -1,7 +1,7 @@
 %Pnom = P_test
 %K = K_2lmi
 
-function [closed_loop_2norm,closed_loop_infnorm ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car)
+function [closed_loop_2norm,closed_loop_infnorm ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
 
 % Generalized feedback interconnection of two models 
 Gnom = lft(P,K,nctrl,nmeas);
@@ -69,7 +69,7 @@ semilogx(muRS(1),'r-',muNP(1),'g-',muRP(1),'b-')
 grid
 legend('RS','NP','RP','location','NorthWest')
 xlabel('Frequency [rad/sec]')
-title('Robustness analysis')
+title(['Robustness analysis, gamma = ',num2str(gamma)])
 
 
 

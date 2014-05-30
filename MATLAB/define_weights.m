@@ -1,19 +1,19 @@
 % Output multiplicative perturbation weights
 s = tf('s');
-W_rho = 0.5*s/(1 + 0.25*s);
+W_rho = ss(0.2);% 0.5*s/(1 + 0.25*s);
 
 
 %   -------------- performance weights ----------------------
 
 %  Noise weights
-W_rhon = 0.01;
+W_rhon = 0.05;  % 1=10 degrees > 0.05 equals 0.5 degrees
 W_rhon = ss(W_rhon);      % convert to state-space
 
 %   Disturbance weights
-W_rhod = 2.5/(500*s+1);      % low frequency disturbance
+W_rhod = 2.5/(5*s+1);      % low frequency disturbance
 
 %   Performance weights
-W_rhoperf = 20/(600*s+1);
+W_rhoperf = 10/(10*s+1);
 
 %  Actuator penalties
 W_alphaperf = 0.04*(1+0.4*s)/(100+0.1*s);
@@ -38,3 +38,4 @@ legend('W_{rho}','W_{noise}','W_{disturbances}','W_{rho,perf}','W_{alpha,perf}')
 xlabel('Frequency [rad/sec]')
 ylabel('Magnitude')
 title('Perturbation weights')
+grid off
