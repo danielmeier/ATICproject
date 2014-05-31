@@ -41,7 +41,7 @@ title(['Weighted closed-loop singular values: ', name])
 
 
 subplot(2,2,3)
-RS_blk = [1,1];
+RS_blk = [2,2];
 NP_blk = [length(Iw),length(Ie)];
 RP_blk = [RS_blk;NP_blk];
 
@@ -95,7 +95,7 @@ Gclp = ss(Aclp,Bclp,Cclp,Dclp);
 
 
 % outp / inp
-Gclp_nom = Gclp(2:3,[2:4]);
+Gclp_nom = Gclp(3:4,[3:5]);
 Gclp_nom = minreal(Gclp_nom);    % remove perturbation weight states.
 
 %  Check stability (always wise!)
@@ -176,7 +176,7 @@ t = [0:dt:tmax]';
 ref = 0.2;
 ustep = ref*(t>= 1);
 
-[yh1step,t1] = lsim(Gclp_nom(:,3),ustep,t);    % response to h1 step command
+[yh1step,t1] = lsim(Gclp_nom(:,2),ustep,t);    % response to h1 step command
 
 %figure
 subplot(2,2,2)

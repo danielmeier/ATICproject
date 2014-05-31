@@ -17,13 +17,14 @@
 %                       Outputs     Inputs
 %
 %    Delta1 (rho)         z1          v1
+%    Delta2 (alpha)       z2          v2
 %
-%    rho tracking err     e2          w2  rho noise
-%    alpha act penalty    e3          w3  rho reference
-%                                     w4  rho disturbance
+%    rho tracking err     e3          w3  rho noise
+%    alpha act penalty    e4          w4  rho reference
+%                                     w5  rho disturbance
 %
-%    rho reference        y4          u5  alpha command
-%    rho measurement      y5
+%    rho reference        y5          u6  alpha command
+%    rho measurement      y6
 %
 %    The controller will have 1 input and 1 output.  Note
 %    the positive feedback is assumed in the implementation
@@ -39,13 +40,13 @@ D_P = sys_P_car.d;
 P = ss(A_P,B_P,C_P,D_P);
 
 %    Create indices for each block.
-Iz = [1:1]';
-Ie = [2:3]';
-Iy = [4:5]';
+Iz = [1:2]';
+Ie = [3:4]';
+Iy = [5:6]';
 
-Iv = [1:1]';
-Iw = [2:4]';
-Iu = [5:5]';
+Iv = [1:2]';
+Iw = [3:5]';
+Iu = [6:6]';
 
 %    define dimensions for each
 nz = length(Iz);
