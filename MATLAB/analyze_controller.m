@@ -1,7 +1,11 @@
 %Pnom = P_test
 %K = K_2lmi
 
-function [closed_loop_2norm,closed_loop_infnorm,muinfo0,Grob_f,muRP ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
+function [closed_loop_2norm,closed_loop_infnorm,muinfo0,Grob_f,muRP,Gclp_nom ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
+
+SUBPLOT = 0;
+
+
 
 % Generalized feedback interconnection of two models 
 Gnom = lft(P,K,nctrl,nmeas);
@@ -28,7 +32,11 @@ svdGnom_f = svd(Gnom_f);
 hFig = figure
 set(hFig, 'Position', [300 -100 1400 800])
 
-subplot(2,2,1)
+if SUBPLOT
+    subplot(2,2,1)
+else
+    figure
+end
 semilogx(svdGnom_f)
 grid on
 xlabel('Frequency [rad/sec]')
@@ -40,7 +48,11 @@ title(['Weighted closed-loop singular values: ', name])
 % step(Grob,0.2);
 
 
-subplot(2,2,3)
+if SUBPLOT
+    subplot(2,2,3)
+else
+    figure
+end
 RS_blk = [2,2];
 NP_blk = [length(Iw),length(Ie)];
 RP_blk = [RS_blk;NP_blk];
@@ -69,9 +81,7 @@ semilogx(muRS(1),'r-',muNP(1),'g-',muRP(1),'b-')
 grid
 legend('RS','NP','RP','location','NorthWest')
 xlabel('Frequency [rad/sec]')
-title(['Robustness analysis, gamma = ',num2str(gamma)])
-
-
+title(['Robustness Analysis, \gamma = ',num2str(gamma,3)])
 
 
 
@@ -179,7 +189,12 @@ ustep = ref*(t>= 1);
 [yh1step,t1] = lsim(Gclp_nom(:,2),ustep,t);    % response to h1 step command
 
 %figure
-subplot(2,2,2)
+
+if SUBPLOT
+    subplot(2,2,2)
+else
+    figure
+end
 plot(t1,yh1step(:,1),t,ustep,'m--')
 grid
 axis([0,tmax,-ref/4,5*ref/4])
@@ -188,12 +203,17 @@ xlabel('Time [sec]')
 ylabel('Outputs')
 title('Nominal h1 step response')
 
-subplot(2,2,4)
+if SUBPLOT
+    subplot(2,2,4)
+else
+    figure
+end
 plot(t1,yh1step(:,2))
 grid
 legend('\alpha','Location','SouthEast')
 xlabel('Time [sec]')
 ylabel('Actuation')
+
 
 
 

@@ -427,20 +427,32 @@ The vehicle is modelled as depicted in Figure \ref{figure:geometry}. The operati
   \label{figure:arab_driving}
 \end{figure}
 
+Perturbations are chosen as:
+
 \begin{equation}
-{W_{rho}} = 0.05
+{W_{rho}} = 0.1
 \end{equation}
+
 \begin{equation}
-{W_{rho,noise}} = 0.05
+{W_{alpha}} = 0.05
 \end{equation}
-\begin{equation}
-{W_{rho,disturbance}} = \frac{{2.5}}{{5 \cdot s + 1}}
-\end{equation}
+
+Performance weights are:
+
 \begin{equation}
 {W_{rho,performace}} = \frac{{10}}{{10 \cdot s + 1}}
 \end{equation}
+
 \begin{equation}
 {W_{alpha,performance}} = \frac{{0.04 \cdot \left( {1 + 0.4 \cdot s} \right)}}{{100 + 0.1 \cdot s}}
+\end{equation}
+
+\begin{equation}
+{W_{rho,noise}} = 0.025
+\end{equation}
+
+\begin{equation}
+{W_{rho,disturbance}} = \frac{{2.5}}{{5 \cdot s + 1}}
 \end{equation}
 
 
@@ -483,6 +495,40 @@ MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
     \item $\alpha$
     \item $\rho$
 \end{itemize}
+
+
+\section{Robust $H_{\inf}$ Controller Design}
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/RP_before_DK} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
+
+\section{D-K iteration}
+
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/RP_after_DK} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
+
+
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/step_comp_02} 
+  \caption{Two-wheeled driving in a real car}  
+  \label{figure:arab_driving}
+\end{figure}
+
 
 
  

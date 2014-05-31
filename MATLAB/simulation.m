@@ -10,8 +10,6 @@ run('parameters')
 omega = logspace(-4,3,250);
 global K_sim;
 
-K_sim = 1
-
 %% Linearize normalized car plant
 
 % Linearize Plant
@@ -26,13 +24,13 @@ run('linearize_pertubated_plant_model_car')
 %% Controller design
 
 run('design_K_nom')
-[h2_nom,h2_nom_inf]  = analyze_controller(P_nom,K_nom,nctrl,nmeas,omega,'Nominal Design',P,Iw,Ie,Iz,Iv,P_car,gamma)
+[h2_nom,h2_nom_inf]  = analyze_controller(P_nom,K_nom,nctrl,nmeas,omega,'Nominal Design',P,Iw,Ie,Iz,Iv,P_car,gamma);
 
 %run('design_K_LMI')
 %analyze_controller(P_h2lmi,K_h2lmi,nctrl,nmeas,omega,'H2 LMI',P,Iw,Ie,Iz,Iv,P_car,gamma_2lmi)
 
 run('design_K_H2Syn')
-[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP] = analyze_controller(P_h2syn,K_h2syn,nctrl,nmeas,omega,'H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma_2syn)
+[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP,Gclp_nom] = analyze_controller(P_h2syn,K_h2syn,nctrl,nmeas,omega,'H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma_2syn);
 
 % h2_nom - h2_syn
 % h2_nom_inf - h2_syn_inf
@@ -49,7 +47,29 @@ Kmu1 = minreal(Kmu1);
 G_mu1= lft(P_nom,Kmu1);
 norm(G_mu1,Inf)
 
-[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP] = analyze_controller(Pmu1design,Kmu1,nctrl,nmeas,omega,'D-K H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma1)
+[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP,Gclp_nom_DK] = analyze_controller(Pmu1design,Kmu1,nctrl,nmeas,omega,'D-K H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma1);
 
+
+
+%% Comparison
+
+tmax = 3;
+dt = 0.001;
+t = [0:dt:tmax]';
+
+%   Make the step begin at 10 seconds.
+ref = 0.2;
+ustep = ref*(t>= 0.5);
+[yh1step,t1] = lsim(Gclp_nom(:,2),ustep,t);    % response to h1 step command
+[yh1step_DK,t1] = lsim(Gclp_nom_DK(:,2),ustep,t);    % response to h1 step command
+
+figure
+plot(t1,yh1step(:,1),t,yh1step_DK(:,1),t,ustep,'m--')
+grid
+axis([0,tmax,-ref/4,5*ref/4])
+legend('\rho_{Hinf}','\rho_{D-K}','\rho_r_e_f','location','SouthEast')
+xlabel('Time [sec]')
+ylabel('Outputs')
+title('Nominal Step Response')
 
 
