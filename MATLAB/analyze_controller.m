@@ -3,7 +3,7 @@
 
 function [closed_loop_2norm,closed_loop_infnorm,muinfo0,Grob_f,muRP,Gclp_nom ] = analyze_controller(P,K,nctrl,nmeas,omega,name,P_pert,Iw,Ie,Iz,Iv,P_car,gamma)
 
-SUBPLOT = 0;
+SUBPLOT = 1;
 
 
 
@@ -28,9 +28,10 @@ Gnom_f = frd(Gnom,omega);
 % Singular value decomposition
 svdGnom_f = svd(Gnom_f);
 
-
-hFig = figure
-set(hFig, 'Position', [300 -100 1400 800])
+if SUBPLOT
+    hFig = figure
+    set(hFig, 'Position', [300 -100 1400 800])
+end
 
 if SUBPLOT
     subplot(2,2,1)

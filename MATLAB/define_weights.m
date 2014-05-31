@@ -1,7 +1,7 @@
 % Output multiplicative perturbation weights
 s = tf('s');
-W_rho = ss(0.10);% 0.5*s/(1 + 0.25*s);
-W_alpha = ss(0.05);% 0.5*s/(1 + 0.25*s);
+W_rho = ss(0.05);% 0.5*s/(1 + 0.25*s);
+W_alpha = ss(0.025);% 0.5*s/(1 + 0.25*s);
 
 
 %   -------------- performance weights ----------------------
@@ -11,13 +11,13 @@ W_rhon = 0.025;  % 1=10 degrees > 0.025 equals 0.25 degrees
 W_rhon = ss(W_rhon);      % convert to state-space
 
 %   Disturbance weights
-W_rhod = 2.5/(5*s+1);      % low frequency disturbance
+W_rhod = 2.5/(3*s+1);      % low frequency disturbance
 
 %   Performance weights
-W_rhoperf = 10/(10*s+1);
+W_rhoperf = 30/(10*s+1);
 
 %  Actuator penalties
-W_alphaperf = 0.04*(1+0.4*s)/(100+0.1*s);
+W_alphaperf = 0.04*(1+4*s)/(100+0.1*s);
 
 % Calculate frequency response
 W_rho_f = frd(W_rho,omega);

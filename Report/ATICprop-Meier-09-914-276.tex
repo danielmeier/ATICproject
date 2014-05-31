@@ -275,7 +275,13 @@ D-MAVT, ETH Zurich}
 
 \begin{abstract}
 
-This project presents a robust control approach in order to stabilize a radio controlled car on two wheels. Figure \ref{figure:arab_driving} shows this driving mode with a real car. A car on two wheels is an unstable system comparable to an inverted pendulum and therefore needs to be actively controlled. Due to many sources of uncertainty a robust controller is desirable.
+This paper presents the modelling and control of an RC-car driving on two wheels. In order to deal with a variety of uncertainties, a robust control approach is chosen. Therefore, perturbations are modelled in order to deal with actuator uncertainties as well as different geometries. The controller design with D-K iteration is compared to the design with a $H_{\infty}$ controller.
+
+\end{abstract}
+
+\section{Introduction}
+
+This project presents a robust control approach in order to stabilize a radio controlled car on two wheels. Figure \ref{figure:arab_driving}\footnote{Picture source: http://list25.com/} shows this driving mode with a real car. A car on two wheels is an unstable and nonlinear system and therefore needs to be actively controlled. Due to several sources of uncertainty a robust controller is desirable.
 
 \begin{figure}[h]
 \centering
@@ -284,15 +290,7 @@ This project presents a robust control approach in order to stabilize a radio co
   \label{figure:arab_driving}
 \end{figure}
 
-\end{abstract}
-
-\section{Declaration of originality}
-
-Declaration of originality.
-
-\section{Introduction}
-
-The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}. Its length is about 430mm with a weight of about 1.2kg. The resulting nonlinear system is unstable. There is one equilibrium point which is dependant on the weight distribution of the car (center of gravity).
+The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}\footnote{Picture source: http://www.rcnitrotalk.com}. Its length is about 430mm with a weight of about 1.2kg. 
 
 \begin{figure}[h!]
 \centering
@@ -301,7 +299,7 @@ The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{f
   \label{figure:hpi_sprint}
 \end{figure}
 
-The controller has in- \& outputs as depicted in figure \ref{figure:controlinout}. As shown in \cite{bib:arndt}, a similar system can be controlled in a SISO matter. However, since there are cross-couplings, a MIMO approach would promise better performance.
+The controller has in- \& outputs as depicted in figure \ref{figure:controlinout}. 
 
 \begin{table}[h]
 \begin{center}
@@ -309,11 +307,8 @@ The controller has in- \& outputs as depicted in figure \ref{figure:controlinout
 \hline
  		& Input 		& Output\\
 \hline
-SISO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
+SISO 	& Roll angle $\rho$ 	& Steering angle $\alpha$\\
 \hline
-%MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
-%     	& Speed v 		& Acceleration\\
-%\hline
 \end{tabular}
 \caption{In- and outputs of the control systems}  
 \label{figure:controlinout}
@@ -323,11 +318,11 @@ SISO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
 
 \section{Prior Work}
 
-Arndt \cite{bib:arndt} presented an approach to control a car on two wheels however not with an optimal controller. Moreover, their car has significantly bigger tires, more inertia and a higher center of gravity which facilitates control. Liu \cite{bib:liu} developed a PID approach to control a car driving on two wheels.
+Arndt \cite{bib:arndt} presented an approach to control a car on two wheels, however not using an optimal controller. Moreover, their car has significantly bigger tires, more inertia and a higher center of gravity which facilitates control. Liu \cite{bib:liu} developed a PID approach to control a car driving on two wheels.
 
 \section{Dynamic System Model}
 
-The system model is set up as depicted in Figure \ref{figure:P_car}. It consists of the steering mechanism, the roll angle dependant mapping of the steering angle and the vehicle body dynamics.
+The system model consists of the steering mechanism, the roll angle dependant mapping of the steering angle and the vehicle body dynamics. It is set up as depicted in Figure \ref{figure:P_car}. 
 
 \begin{figure}[h]
 \centering
@@ -336,21 +331,29 @@ The system model is set up as depicted in Figure \ref{figure:P_car}. It consists
   \label{figure:P_car}
 \end{figure}
 
-As normalization factors, a steering angle $\alpha_{0}=10°$ and a roll angle $\rho_{0}=10°$ is chosen.
+The angle $\rho$ depicts the cars attitude as introduced in Figure \ref{figure:car_from_back}\footnote{Source of car picture: http://www.4vector.com}. Accordingly, there is one equilibrium point ($\dot{\Psi} = \dot{\rho} = \dot{\alpha} = 0$) which is dependant on the weight distribution of the car and its center of gravity (COG). This equilibrium point is also chosen at the operating point. As normalization factors, a steering angle $\alpha_{0}=10°$ and a roll angle $\rho_{0}=10°$ is chosen.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/car_from_back} 
+  \caption{Convention of roll angle: The state $\rho$ depicts the angle around the equilibrium point (where the car's GOG is right above the line of the two wheels). $\rho_{0,car}$ is a geometrical constant which describes the cars attitude at the equilibrium.}  
+  \label{figure:car_from_back}
+\end{figure}
+
 
 
 \subsection{Modelling Assumptions}
 
 \begin{itemize}
-    \item Constant velocity. Dynamics of motor are slower.
-    \item Coriolis force is neglected, since it small for small steering angles.
+    \item Constant velocity. The dynamics of motor are slower than the dynamics of the steering and the balancing.
+    \item Coriolis force is neglected, since it negligible for small steering angles.
     \item Tires have infinite grip and follow exactly the steering direction.
 \end{itemize}
 
 
 \subsection{Steering}
 
-The \textsc{front steering} is modelled as a second order system as described by equation \ref{eq:steering}. $\alpha _{desired}$ is the systems control input, $\omega$ and $\zeta$ are chosen to match the dynamics as realistic as possible.
+The front wheel steering is modelled as a second order system as described by equation \ref{eq:steering}. $\alpha _{desired}$ is the systems control input, $\omega$ and $\zeta$ are chosen to match the dynamics as realistic as possible.
 
 \begin{equation}
 \frac{{{d^2}}}{{d{t^2}}}\alpha  =  - 2\zeta \omega \dot \alpha  - {\omega ^2}\left( {\alpha  - {\alpha _{desired}}} \right)
@@ -359,12 +362,12 @@ The \textsc{front steering} is modelled as a second order system as described by
 
 To get the effective steering angle $\beta$, a nonlinear mapping is required. It is depicted by Figure \ref{figure:angle_plot} and implemented in the block \textsc{Angle Mapping}. It can be seen, that steering inputs lead to high effective angles when operating at a high roll angle.
 
-%\begin{figure}[Hhh]
-%\centering
-%  \includegraphics[width=.3\textwidth]{pics/car_roll.eps} 
-%  \caption{Car with a non-zero roll angle. The effective steering angle $\beta$ is different to the steering angle $\alpha$}  
-%  \label{figure:car_roll}
-%\end{figure}
+\begin{figure}[Hhh]
+\centering
+  \includegraphics[width=.3\textwidth]{pics/car_roll.eps} 
+  \caption{Car with a non-zero roll angle. The effective steering angle $\beta$ is different to the steering angle $\alpha$}  
+  \label{figure:car_roll}
+\end{figure}
 
 \begin{figure}[Hhh]
 \centering
@@ -376,60 +379,83 @@ To get the effective steering angle $\beta$, a nonlinear mapping is required. It
 
 \subsection{Body dynamics}
 
-The vehicle is modelled as depicted in Figure \ref{figure:geometry}. The operating point is chosen as $\dot{\Psi} = \dot{\rho} = \dot{\alpha} = 0$
+The vehicle is modelled as depicted in Figure \ref{figure:geometry}. The gravitational force $F_G$ and the centripetal force $F_C$ are defined as:
 
-\begin{figure}[h!]
+\begin{equation}
+{F_G} = m \cdot g
+\end{equation}
+
+\begin{equation}
+{F_C} = \cos \left( {{\gamma _c}} \right) \cdot m \cdot {{\dot \psi }^2} \cdot {l_{ZM}}
+\end{equation}
+
+\begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/geometry} 
   \caption{HPI Sprint}  
   \label{figure:geometry}
 \end{figure}
 
+$m$ is the vehicles mass, $l_{ZM}$ the distance between the center of rotation and the GOG and $\dot \psi$ the turning rate of the car. The factor $\cos \left( {{\gamma _c}} \right)$ takes into account that the centripetal force is not necessarily perpendicular to the roll axis of rotation of the car. This factor however can be neglected since it has only very small deviations from $1$. With $\dot \psi  = \frac{v}{{{l_{ZR}}}}$ and ${l_{ZM}} \approx {l_{ZR}}$, the centripetal force can therefore be expressed as:
+
+\begin{equation}
+{F_C} \approx m \cdot \frac{{{v^2}}}{{{l_w}}} \cdot \frac{{\sin \left( {{\beta _F} - {\beta _R}} \right)}}{{\cos \left( {{\beta _F}} \right)}}
+\end{equation}
+
+$v$ is the vehicles velocity, $l_w$ the distance between the two wheels, $\beta_F$ and $\beta_R$ the front and rear effective steering angles resulting from the non-linear mapping. The resulting differential equation is given as:
 
 
+\begin{equation}
+\frac{{d\rho }}{{dt}} = \dot \rho
+\end{equation}
+
+\begin{equation}
+\frac{{d\dot \rho }}{{dt}} = \frac{1}{{m \cdot {l_p}}}\left( {\sin \rho  \cdot {F_G} - \cos \rho  \cdot {F_C}} \right)
+\end{equation}
 
 
- 
+\subsection{States}
+
+As a result, the plant consists of the states shown in Table \ref{figure:states}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l||l|l|l|}
+\hline
+Variable 		& Description 		& Unit		& Operating point \\
+\hline
+$\alpha$ 		& Steering angle 	& $rad$	& 0\\
+\hline
+$\dot \alpha$	& Steering rate 	& $rad/s$	& 0\\
+\hline
+$\rho$			& Roll angle 		& $rad$	& 0\\
+\hline
+$\dot \rho$		& Roll rate 		& $rad/s$	& 0\\
+\hline
+\end{tabular}
+\caption{States of the plant}  
+\label{figure:states}
+\end{center}
+\end{table}
 
 
-
-
-
-
-
- 
 \section{Uncertainty Modelling}
 
 
+%For the introduced control problen, the following sources for uncertainty comprise are considered:
+%
+%\begin{itemize}
+%    \item Geometry: Inertia tensor and mass. The weight distribution for instance determines the equilibrium point $\bar{\beta}$
+%    \item Steering: The effect of the steering angle is dependent on the vehicles tilt angle $\beta$ and nonlinear. Uncertainties can cause significant error
+%    \item Contact model for wheel - ground interaction
+%    \item Engine behaviour
+%    \item External disturbances such as wind
+%\end{itemize}
 
-
-\begin{figure}[h]
-\centering
-  \includegraphics[width=.47\textwidth]{pics/model_car.png} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
-\end{figure}
-
-
-\begin{figure}[h]
-\centering
-  \includegraphics[width=.47\textwidth]{pics/model_car_unweighted.png} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
-\end{figure}
-
-
-
-\begin{figure}[h]
-\centering
-  \includegraphics[width=.47\textwidth]{pics/weights.eps} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
-\end{figure}
-
-Perturbations are chosen as:
+In order to deal with uncertainties, perturbations were introduced to the model. The uncertainty of the angle is modelled as a constant with value $0.1$, which is equivalent to 1 degree. Also, the actuator has a uncertainty of $0.05$ (0.5 degree).
 
 \begin{equation}
+\label{eg:W_rho}
 {W_{rho}} = 0.1
 \end{equation}
 
@@ -437,7 +463,7 @@ Perturbations are chosen as:
 {W_{alpha}} = 0.05
 \end{equation}
 
-Performance weights are:
+Performance weights are chosen as follows:
 
 \begin{equation}
 {W_{rho,performace}} = \frac{{10}}{{10 \cdot s + 1}}
@@ -447,6 +473,8 @@ Performance weights are:
 {W_{alpha,performance}} = \frac{{0.04 \cdot \left( {1 + 0.4 \cdot s} \right)}}{{100 + 0.1 \cdot s}}
 \end{equation}
 
+Noise is assumed to be constant over the whole spectrum. Disturbances are rejected in low frequencies.
+
 \begin{equation}
 {W_{rho,noise}} = 0.025
 \end{equation}
@@ -455,81 +483,99 @@ Performance weights are:
 {W_{rho,disturbance}} = \frac{{2.5}}{{5 \cdot s + 1}}
 \end{equation}
 
+Figure \ref{figure:weights} shows these weights graphically.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/weights.eps} 
+  \caption{Weights of the weighted plant}  
+  \label{figure:weights}
+\end{figure}
+
+As a result, the weighted plant looks as depicted in \ref{figure:model_car}.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/model_car.png} 
+  \caption{Weighted plant}  
+  \label{figure:model_car}
+\end{figure}
+
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
+a \\
 
 
-Potential sources for uncertainty comprise:
+\section{Robust $H_{2}$ Controller Design}
 
-\begin{itemize}
-    \item Geometry: Inertia tensor and mass. The weight distribution for instance determines the equilibrium point $\bar{\beta}$
-    \item Steering: The effect of the steering angle is dependent on the vehicles tilt angle $\beta$ and nonlinear. Uncertainties can cause significant error
-    \item Contact model for wheel - ground interaction
-    \item Engine behaviour
-    \item External disturbances such as wind
-\end{itemize}
+For the controller design, the weights were removed. The plant then looks as in Figure \ref{figure:arab_driving}.
 
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/model_car_unweighted.png} 
+  \caption{Unweighted plant}  
+  \label{figure:arab_driving}
+\end{figure}
 
- 
-
-\section{States}
-
-\begin{table}[h]
-\begin{center}
-\begin{tabular}{|l||l|l|}
-\hline
- 		& Input 		& Output\\
-\hline
-x 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
-\hline
-MIMO 	& Turning rate $\dot{\psi}$ 	& Steering angle $\alpha$\\
-     	& Speed v 		& Acceleration\\
-\hline
-\end{tabular}
-\caption{In- and outputs of the control systems}  
-\label{figure:controlinout}
-\end{center}
-\end{table}
-
-\begin{itemize}
-    \item x
-    \item $\psi$
-    \item $\alpha$
-    \item $\rho$
-\end{itemize}
-
-
-\section{Robust $H_{\inf}$ Controller Design}
-
+A robustness analysis for the resulting $H_2$ controller is shown in figure \ref{figure:RP_before_DK}.
 
 \begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/RP_before_DK} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
+  \caption{Robustness analysis of a $H_2$ controller}  
+  \label{figure:RP_before_DK}
 \end{figure}
+
 
 
 \section{D-K iteration}
 
-
+As a next step, a D-K iteration was performed. This had the result of an increased robustness, as Figure \ref{figure:RP_after_DK} shows.
 
 \begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/RP_after_DK} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
+  \caption{Robustness analysis after D-K iteration}  
+  \label{figure:RP_after_DK}
 \end{figure}
 
-
+In order to compare the performance, a step response is shown in Figure \ref{figure:step_comp_02}
 
 
 \begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/step_comp_02} 
-  \caption{Two-wheeled driving in a real car}  
-  \label{figure:arab_driving}
+  \caption{Step response for different controllers}  
+  \label{figure:step_comp_02}
 \end{figure}
 
 
+\section{Conclusions}
+
+blablabla
 
  
  

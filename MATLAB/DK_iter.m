@@ -144,9 +144,9 @@ sysD0 = ss(sysD0);
 sysDi0 = zeros(2,2);
 sysDi0 = ss(sysDi0);
 sysD0(1,1) = D0_1a;
-sysDi0(1,1) = inv(D0_1a);
+sysDi0(1,1) = inv(sysD0(1,1));
 sysD0(2,2) = D0_2a;
-sysDi0(2,2) = inv(D0_2a);
+sysDi0(2,2) = inv(sysD0(2,2));
 
 
 D0h = [sysD0, zeros(length(Iz),length(Ie)+nmeas);...
