@@ -39,3 +39,11 @@ pf_mapping_1st_FR = polyfit(alphaF,beta_F,1);
 pf_mapping_1st_RR = mean(beta_R);
 
 clear alphaF alphaR rho ii beta_F beta_R linearization
+
+
+% s = tf('s');
+% 
+% steering = w_w^2/(s^2 + 2*w_w*w_z*s + w_w^2);
+% 
+% figure
+% step(steering,0.2)

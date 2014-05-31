@@ -41,9 +41,7 @@ run('design_K_H2Syn')
 
 run DK_iter
 
-
 [Kmu1,Gmu1,gamma1,info1] = hinfsyn(Pmu1design,nmeas,nctrl);
-
 if isempty(Kmu1),
   error('hinfsyn failed to run');
 end
@@ -51,9 +49,7 @@ Kmu1 = minreal(Kmu1);
 G_mu1= lft(P_nom,Kmu1);
 norm(G_mu1,Inf)
 
-
-%run('design_K_H2Syn')
-[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP] = analyze_controller(P_h2syn,Kmu1,nctrl,nmeas,omega,'H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma_2syn)
+[h2_syn ,h2_syn_inf,muinfo0,Grob_f,muRP] = analyze_controller(Pmu1design,Kmu1,nctrl,nmeas,omega,'D-K H2 Syn',P,Iw,Ie,Iz,Iv,P_car,gamma1)
 
 
 
