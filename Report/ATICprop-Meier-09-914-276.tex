@@ -290,7 +290,7 @@ This project presents a robust control approach in order to stabilize a radio co
   \label{figure:arab_driving}
 \end{figure}
 
-The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}\footnote{Picture source: http://www.rcnitrotalk.com}. Its length is about 430mm with a weight of about 1.2kg. It can be controlled with the front wheels, which have an angle $\alpha$, resulting in a turning rate $\Psi$. The car is actuated with a DC motor on the rear wheels and drives with the velocity $v$, which is assumed to be constant.  
+The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}\footnote{Picture source: http://www.rcnitrotalk.com}. Its length is about 430mm with a weight of about 1.2kg. It can be controlled with the front wheels, which have an angle $\alpha$, resulting in a turning rate $\dot \Psi$. The car is actuated with a DC motor on the rear wheels and drives with the velocity $v$, which is assumed to be constant.  
 
 \begin{figure}[h!]
 \centering
@@ -299,7 +299,7 @@ The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{f
   \label{figure:hpi_sprint}
 \end{figure}
 
-The controller has in- \& outputs as depicted in Table \ref{figure:controlinout}. The angle command $\alpha$ is sent to the servo which actuated the steering. As a input the roll angle $\rho$ is chosen since it also corresponds to the vehicles direction. A design with a position input would be interesting for simulation purposes, however not suitable since the real system does not comprise sensors to observe it.
+The controller has in- \& outputs as depicted in Table \ref{figure:controlinout}. The angle command $\alpha$ is sent to the servo which actuates the steering. As a input the roll angle $\rho$ is chosen since it also corresponds to the vehicles direction. A design with a position input would be interesting for simulation purposes, however not suitable since the real system does not comprise sensors to observe it.
 
 \begin{table}[h]
 \begin{center}
@@ -331,7 +331,7 @@ The system model consists of the steering mechanism, the roll angle dependant ma
   \label{figure:P_car}
 \end{figure}
 
-The angle $\rho$ depicts the cars attitude as introduced in Figure \ref{figure:car_from_back}\footnote{Source of car picture: http://www.4vector.com}. Accordingly, there is one equilibrium point ($\dot{\Psi} = \dot{\rho} = \dot{\alpha} = 0$) which is dependant on the weight distribution of the car and its center of gravity (COG). This equilibrium point is also chosen at the operating point. As normalization factors, a steering angle $\alpha_{0}=10°$ and a roll angle $\rho_{0}=10°$ is chosen.
+The angle $\rho$ depicts the cars attitude as introduced in Figure \ref{figure:car_from_back}\footnote{Source of car picture: http://www.4vector.com}. Accordingly, there is one equilibrium point ($\dot{\rho} = \dot{\alpha} = 0$) which is dependant on the weight distribution of the car and its center of gravity (COG). This equilibrium point is also chosen at the operating point. As normalization factors, a steering angle $\alpha_{0}=10\deg$ and a roll angle $\rho_{0}=10\deg$ is chosen.
 
 \begin{figure}[h]
 \centering
@@ -451,6 +451,15 @@ $\dot \rho$		& Roll rate 		& $rad/s$	& 0\\
 %    \item Engine behaviour
 %    \item External disturbances such as wind
 %\end{itemize}
+
+For the introduced control problem the effect of a variation in the parameters was simulated. For instance, a variation of the driving speed $v$ chosen as $v_{car} = v_{car,nominal} + \mathcal{N}(0,0.2)$ led to frequency responses as shown in Figure \ref{figure:bode_plant}. 
+
+\begin{figure}[h]
+\centering
+  \includegraphics[width=.47\textwidth]{pics/bode_plant.eps} 
+  \caption{Frequency response of the nominal plant with a variation of the vehicles driving speed: $v_{car} = v_{car,nominal} + \mathcal{N}(0,0.2)$}  
+  \label{figure:bode_plant}
+\end{figure}
 
 In order to deal with uncertainties, perturbations were introduced to the model. The uncertainty of the angle is modelled as a constant with value $0.1$, which is equivalent to 1 degree. Also, the actuator has a uncertainty of $0.05$ (0.5 degree).
 

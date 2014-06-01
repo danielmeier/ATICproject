@@ -61,11 +61,10 @@ t = [0:dt:tmax]';
 ustep = 0.2*(t>= 1.0);
 %ustep = 1*sin(12.1*t);
 
-dstep = 0.5*(t>= 2.0 & t<= 3.0);
+dstep = 0*0.5*(t>= 2.0 & t<= 3.0);
 %dstep = 0.1*sin(12.1*t);
 
-noise = randn(size(t))/50;
-
+noise = 0*randn(size(t))/50;
 [yh1step_Hinf,t1] = lsim(Gclp_nom_inf(:,1:3),[noise,ustep,dstep],t);    % response to h1 step command
 [yh1step_H2,t1] = lsim(Gclp_nom(:,1:3),[noise,ustep,dstep],t);    % response to h1 step command
 [yh1step_DK,t1] = lsim(Gclp_nom_DK(:,1:3),[noise,ustep,dstep],t);    % response to h1 step command
@@ -92,3 +91,5 @@ ylabel('Actuation')
 
 
 
+Ksim = K_h2syn%
+Ksim = Kmu1
