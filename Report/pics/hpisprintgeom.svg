@@ -105,7 +105,7 @@
      inkscape:cx="374.72383"
      inkscape:cy="618.05304"
      inkscape:document-units="px"
-     inkscape:current-layer="g5304"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1455"
      inkscape:window-height="841"
@@ -218,45 +218,5 @@
        inkscape:original-d="m 388.88318,256.43818 c 0,0 -6.59452,9.63644 -19.20791,14.94377 -9.66647,4.06735 -32.84416,-8.82984 -32.84416,-8.82984"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 267.69043,494.75798 424.26407,636.68441"
-       id="path5104"
-       inkscape:path-effect="#path-effect5106"
-       inkscape:original-d="M 267.69043,494.75798 424.26407,636.68441"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 314.96334,458.69331 426.99371,511.2729"
-       id="path5108"
-       inkscape:path-effect="#path-effect5110"
-       inkscape:original-d="M 314.96334,458.69331 426.99371,511.2729"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-7)"
-       d="m 367.69552,579.61079 c 2.7367,-7.87928 4.76775,-16.0035 6.06092,-24.24366 3.54701,-22.60188 1.44555,-46.06821 -6.06092,-67.68022"
-       id="path5112"
-       inkscape:path-effect="#path-effect5114"
-       inkscape:original-d="m 367.69552,579.61079 c 0,0 6.06092,-8.08122 6.06092,-24.24366 0,-14.47886 -6.06092,-67.68022 -6.06092,-67.68022"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csc" />
-    <g
-       id="g5304"
-       transform="translate(383.7081,534.6915)">
-      <text
-         id="text5306"
-         style="font-size:13.80000019px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;font-family:Calibri"
-         y="13.057754"
-         x="0"
-         xml:space="preserve"><tspan
-           style="font-size:24px"
-           id="tspan5317">ρ</tspan></text>
-      <text
-         id="text5308"
-         style="font-size:13.80000019px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;font-family:Calibri"
-         y="13.057754"
-         x="7.3499999"
-         xml:space="preserve"> </text>
-    </g>
   </g>
 </svg>

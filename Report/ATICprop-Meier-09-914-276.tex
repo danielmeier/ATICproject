@@ -281,7 +281,7 @@ This paper presents the modelling and control of an RC-car driving on two wheels
 
 \section{Introduction}
 
-This project presents a robust control approach in order to stabilize a radio controlled car on two wheels. Figure \ref{figure:arab_driving}\footnote{Picture source: http://list25.com/} shows this driving mode with a real car. A car on two wheels is an unstable and nonlinear system and therefore needs to be actively controlled. Due to several sources of uncertainty a robust controller is desirable.
+This project presents a robust control approach in order to stabilize a radio controlled car on two wheels. Figure \ref{figure:arab_driving}\footnote{Picture source: http://list25.com/} shows this driving mode with a real car. A car on two wheels is an unstable and nonlinear system and therefore needs to be actively controlled. Due to several sources of uncertainty (such as geometry or an imprecise steering) a robust controller is desirable.
 
 \begin{figure}[h]
 \centering
@@ -290,7 +290,7 @@ This project presents a robust control approach in order to stabilize a radio co
   \label{figure:arab_driving}
 \end{figure}
 
-The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}\footnote{Picture source: http://www.rcnitrotalk.com}. Its length is about 430mm with a weight of about 1.2kg. 
+The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{figure:hpi_sprint}\footnote{Picture source: http://www.rcnitrotalk.com}. Its length is about 430mm with a weight of about 1.2kg. It can be controlled with the front wheels, which have an angle $\alpha$, resulting in a turning rate $\Psi$. The car is actuated with a DC motor on the rear wheels and drives with the velocity $v$, which is assumed to be constant.  
 
 \begin{figure}[h!]
 \centering
@@ -299,7 +299,7 @@ The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{f
   \label{figure:hpi_sprint}
 \end{figure}
 
-The controller has in- \& outputs as depicted in figure \ref{figure:controlinout}. 
+The controller has in- \& outputs as depicted in Table \ref{figure:controlinout}. 
 
 \begin{table}[h]
 \begin{center}
@@ -310,7 +310,7 @@ The controller has in- \& outputs as depicted in figure \ref{figure:controlinout
 SISO 	& Roll angle $\rho$ 	& Steering angle $\alpha$\\
 \hline
 \end{tabular}
-\caption{In- and outputs of the control systems}  
+\caption{In- and outputs of the control system}  
 \label{figure:controlinout}
 \end{center}
 \end{table}
@@ -345,9 +345,9 @@ The angle $\rho$ depicts the cars attitude as introduced in Figure \ref{figure:c
 \subsection{Modelling Assumptions}
 
 \begin{itemize}
-    \item Constant velocity. The dynamics of motor are slower than the dynamics of the steering and the balancing.
-    \item Coriolis force is neglected, since it negligible for small steering angles.
-    \item Tires have infinite grip and follow exactly the steering direction.
+    \item Constant velocity $v$. The dynamics of motor are slower than the dynamics of the steering and the balancing.
+    \item Coriolis force is neglected, since it is small for small steering angles.
+    \item Contact model: Tires have infinite grip and follow exactly the steering direction.
 \end{itemize}
 
 
@@ -360,7 +360,7 @@ The front wheel steering is modelled as a second order system as described by eq
 \label{eq:steering}
 \end{equation}
 
-To get the effective steering angle $\beta$, a nonlinear mapping is required. It is depicted by Figure \ref{figure:angle_plot} and implemented in the block \textsc{Angle Mapping}. It can be seen, that steering inputs lead to high effective angles when operating at a high roll angle.
+To get the effective steering angle $\beta$, a nonlinear mapping is required. It is depicted by Figure \ref{figure:angle_plot} and implemented in the block \textit{Angle Mapping}. It can be seen that steering inputs lead to high effective angles when operating at a high roll angle. Moreover the nonlinearity is more significant at higher roll angles $\rho$.
 
 \begin{figure}[Hhh]
 \centering
@@ -433,7 +433,7 @@ $\rho$			& Roll angle 		& $rad$	& 0\\
 $\dot \rho$		& Roll rate 		& $rad/s$	& 0\\
 \hline
 \end{tabular}
-\caption{States of the plant}  
+\caption{States of the nominal plant}  
 \label{figure:states}
 \end{center}
 \end{table}
@@ -492,7 +492,7 @@ Figure \ref{figure:weights} shows these weights graphically.
   \label{figure:weights}
 \end{figure}
 
-As a result, the weighted plant looks as depicted in \ref{figure:model_car}.
+As a result, the weighted plant looks as depicted in \ref{figure:model_car}. The inputs are described in Table \ref{figure:model_car_inputs} and the outputs in Table \ref{figure:model_car_outputs}.
 
 \begin{figure}[h]
 \centering
@@ -501,57 +501,86 @@ As a result, the weighted plant looks as depicted in \ref{figure:model_car}.
   \label{figure:model_car}
 \end{figure}
 
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
-a \\
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l||l|}
+\hline
+Vector 		& Description 		\\
+\hline
+$v1$ 		& Delta ($\rho$) 	\\
+\hline
+$v2$		& Delta ($\alpha$) 	\\
+\hline
+\hline
+$w3$		& $\rho$ noise 		\\
+\hline
+$w4$		& $\rho$ reference	\\
+\hline
+$w5$		& $\rho$ disturbance 		\\
+\hline
+\hline
+$u6$		& $\alpha$ command	\\
+\hline
+\end{tabular}
+\caption{Inputs of the weighted plant}  
+\label{figure:model_car_inputs}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l||l|}
+\hline
+Vector 		& Description 		\\
+\hline
+$z1$ 		& Delta ($\rho$) 	\\
+\hline
+$z2$		& Delta ($\alpha$) 	\\
+\hline
+\hline
+$e3$		& $\rho$ tracking error 		\\
+\hline
+$e4$		& $\alpha$ actuation penalty	\\
+\hline
+\hline
+$y5$		& $\rho$ reference 		\\
+\hline
+$y6$		& $\rho$ measurement	\\
+\hline
+\end{tabular}
+\caption{Outputs of the weighted plant}  
+\label{figure:model_car_outputs}
+\end{center}
+\end{table}
 
 
-\section{Robust $H_{2}$ Controller Design}
+\section{Robust Control Design}
 
-For the controller design, the weights were removed. The plant then looks as in Figure \ref{figure:arab_driving}.
+The robust control design consists of two parts: First, a $H_{\infty}$ controller is developed using the weighted but unperturbed plant. Second, a D-K iteration is performed in order to achieve robust performance.
+
+\subsection{$H_{\infty}$ Controller Design}
+
+For the controller design, the perturbations were removed. As a next step, a $H_{\infty}$ controller was designed with \textsc{MATLAB}'s function \texttt{hinfsyn()}. For simulation purposes, the unweighted plant as shown in Figure \ref{figure:model_car_unweighted} is used. A robustness analysis for the resulting $H_{\infty}$ controller is shown in figure \ref{figure:RP_before_DK}.
 
 \begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/model_car_unweighted.png} 
   \caption{Unweighted plant}  
-  \label{figure:arab_driving}
+  \label{figure:model_car_unweighted}
 \end{figure}
 
-A robustness analysis for the resulting $H_2$ controller is shown in figure \ref{figure:RP_before_DK}.
 
 \begin{figure}[h]
 \centering
   \includegraphics[width=.47\textwidth]{pics/RP_before_DK} 
-  \caption{Robustness analysis of a $H_2$ controller}  
+  \caption{Robustness analysis of a $H_{\infty}$ controller}  
   \label{figure:RP_before_DK}
 \end{figure}
 
 
 
-\section{D-K iteration}
+\subsection{D-K iteration}
 
 As a next step, a D-K iteration was performed. This had the result of an increased robustness, as Figure \ref{figure:RP_after_DK} shows.
 
@@ -562,7 +591,7 @@ As a next step, a D-K iteration was performed. This had the result of an increas
   \label{figure:RP_after_DK}
 \end{figure}
 
-In order to compare the performance, a step response is shown in Figure \ref{figure:step_comp_02}
+In order to compare the performance, a step response is shown in Figure \ref{figure:step_comp_02}. It can be seen that the system acts slower but with fewer oscillations. 
 
 
 \begin{figure}[h]
