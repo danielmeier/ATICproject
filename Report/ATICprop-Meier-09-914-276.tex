@@ -299,7 +299,7 @@ The R/C car which will be modelled is a HPI Sprint, as depicted in Figure \ref{f
   \label{figure:hpi_sprint}
 \end{figure}
 
-The controller has in- \& outputs as depicted in Table \ref{figure:controlinout}. 
+The controller has in- \& outputs as depicted in Table \ref{figure:controlinout}. The angle command $\alpha$ is sent to the servo which actuated the steering. As a input the roll angle $\rho$ is chosen since it also corresponds to the vehicles direction. A design with a position input would be interesting for simulation purposes, however not suitable since the real system does not comprise sensors to observe it.
 
 \begin{table}[h]
 \begin{center}
@@ -391,8 +391,8 @@ The vehicle is modelled as depicted in Figure \ref{figure:geometry}. The gravita
 
 \begin{figure}[h]
 \centering
-  \includegraphics[width=.47\textwidth]{pics/geometry} 
-  \caption{HPI Sprint}  
+  \includegraphics[width=.47\textwidth]{pics/setup} 
+  \caption{Geometry in a turning position}  
   \label{figure:geometry}
 \end{figure}
 
@@ -463,17 +463,19 @@ In order to deal with uncertainties, perturbations were introduced to the model.
 {W_{alpha}} = 0.05
 \end{equation}
 
-Performance weights are chosen as follows:
+Performance weights are chosen as in equation \ref{eg:W_rhop} and \ref{eg:W_alphap}. In order to avoid high frequency actuation commands, $W_{alpha,performance}$ is chosen to act as a high frequency penalty.
 
 \begin{equation}
+\label{eg:W_rhop}
 {W_{rho,performace}} = \frac{{10}}{{10 \cdot s + 1}}
 \end{equation}
 
 \begin{equation}
+\label{eg:W_alphap}
 {W_{alpha,performance}} = \frac{{0.04 \cdot \left( {1 + 0.4 \cdot s} \right)}}{{100 + 0.1 \cdot s}}
 \end{equation}
 
-Noise is assumed to be constant over the whole spectrum. Disturbances are rejected in low frequencies.
+Noise is assumed to be constant over the whole spectrum. Disturbances should be rejected in low frequencies.
 
 \begin{equation}
 {W_{rho,noise}} = 0.025
@@ -561,7 +563,7 @@ The robust control design consists of two parts: First, a $H_{\infty}$ controlle
 
 \subsection{$H_{\infty}$ Controller Design}
 
-For the controller design, the perturbations were removed. As a next step, a $H_{\infty}$ controller was designed with \textsc{MATLAB}'s function \texttt{hinfsyn()}. For simulation purposes, the unweighted plant as shown in Figure \ref{figure:model_car_unweighted} is used. A robustness analysis for the resulting $H_{\infty}$ controller is shown in figure \ref{figure:RP_before_DK}.
+For the controller design, the perturbations were removed. As a next step, a $H_{\infty}$ controller was designed with \textsc{MATLAB}'s function \texttt{hinfsyn()}. For simulation purposes, the unweighted plant as shown in Figure \ref{figure:model_car_unweighted} is used. A robustness analysis for the resulting $H_{\infty}$ controller consisting of the robust stability (RS), nominal performance (NP) and the robust performance (RP) is shown in figure \ref{figure:RP_before_DK}. Both, robust performance and robust stability can not be guaranteed since they have values greater than one at certain frequencies.
 
 \begin{figure}[h]
 \centering
@@ -582,7 +584,7 @@ For the controller design, the perturbations were removed. As a next step, a $H_
 
 \subsection{D-K iteration}
 
-As a next step, a D-K iteration was performed. This had the result of an increased robustness, as Figure \ref{figure:RP_after_DK} shows.
+As a next step, a D-K iteration was performed. This had the result of an increased robustness, as Figure \ref{figure:RP_after_DK} shows. The values of the stability and performance analysis all have magnitude smaller than one, which means that stability is guaranteed while the performance requirements can be met.
 
 \begin{figure}[h]
 \centering
@@ -591,7 +593,7 @@ As a next step, a D-K iteration was performed. This had the result of an increas
   \label{figure:RP_after_DK}
 \end{figure}
 
-In order to compare the performance, a step response is shown in Figure \ref{figure:step_comp_02}. It can be seen that the system acts slower but with fewer oscillations. 
+In order to compare the performance, a step response is shown in Figure \ref{figure:step_comp_02}. It can be seen that the system acts slower but with fewer oscillations. The poles of the closed loop system were found to be negative wherefore the system is stable.
 
 
 \begin{figure}[h]
@@ -604,7 +606,17 @@ In order to compare the performance, a step response is shown in Figure \ref{fig
 
 \section{Conclusions}
 
-blablabla
+The simulation results have shown that the resulting controller is able to control a car on two wheels. Moreover, the robustness analysis showed that the performance requirements can be fulfilled as well as different perturbations representing modelling uncertainty can be handled.
+
+
+\section{Future Work}
+
+After the design of the presented controller, future work includes:
+
+\begin{itemize}
+\item Implementation of the controller on the real system
+\item Changing the controller in order to control the position. This would also comprise the evaluation of a sensor which is suitable to track the vehicles position (e.g. GPS or optical flow)
+\end{itemize}
 
  
  
